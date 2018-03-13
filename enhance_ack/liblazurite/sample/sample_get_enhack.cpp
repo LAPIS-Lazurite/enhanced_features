@@ -59,7 +59,7 @@ int main(int argc, char **argv)
 	uint8_t rate = 100;
 	uint8_t pwr  = 20;
 	char payload[250] = {"hello world\n"};
-	uint8_t *eack_data;
+	uint8_t eack_data[16];
 	uint16_t eack_size;
 
 	// set Signal Trap
@@ -104,13 +104,13 @@ int main(int argc, char **argv)
 		{
 			printf("tx error = %s\n",strerror(result*-1));
 		} else {
-			result = lazurite_getEnhanceAck(&eack_data,&eack_size);
+			result = lazurite_getEnhanceAck((char *)eack_data,&eack_size);
 			if (result < 0) {
 				printf("lazurite_getEnhanceAck failed %d\n",result);
 			} else {
 				printf("getEnhanceAck data = ");
 				for (int i=0;i<eack_size;i++) {
-					printf("0x%02hhx ",eack_data++);
+					printf("0x%02hhx ",*(eack_data+i));
 				}
 				printf("\n");
 			}
